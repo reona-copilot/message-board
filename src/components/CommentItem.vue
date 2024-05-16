@@ -1,6 +1,8 @@
 <template>
-  <!-- 留言列表 -->
-  <div>
+  <!-- 留言item -->
+  <div
+    class="bg-white p-4 rounded-lg shadow-md mb-4"
+  >
     <!-- 用户信息 -->
     <div class="flex">
       <!-- 用户头像 -->
@@ -11,23 +13,9 @@
       >
       <!-- 用户名称和发表时间 -->
       <div>
-        <p>{{ user }}</p>
+        <p>{{ nickname }}</p>
         <p class="text-gray-600 text-sm">{{ time }}</p>
       </div>
-
-      <!-- 菜单靠右对齐 -->
-      <span class="ml-auto">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-gray-500"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"
-          />
-        </svg>
-      </span>
     </div>
     <!-- 留言内容 -->
     <p class="text-gray-600 py-4">
@@ -37,5 +25,33 @@
 </template>
 
 <script setup>
-defineProps(['user', 'avatar', 'time', 'content'])
+import { ref, defineProps, onMounted } from 'vue'
+// 导入图片
+import avatar1 from '../assets/images/avatar1.jpeg'
+import avatar2 from '../assets/images/avatar2.png'
+import avatar3 from '../assets/images/avatar3.png'
+import avatar4 from '../assets/images/avatar4.jpeg'
+import avatar5 from '../assets/images/avatar5.jpeg'
+
+const avatar = ref(avatar1)
+// 随机头像
+onMounted(() => {
+  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5]
+  avatar.value = avatars[Math.floor(Math.random() * avatars.length)]
+})
+
+defineProps({
+  nickname: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  time: {
+    type: String,
+    required: true
+  }
+})
 </script>

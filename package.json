@@ -1,10 +1,10 @@
 {
   "name": "message-board",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "dev": "vite --host",
+    "build": "vite build --host",
+    "serve": "vite preview --host"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
@@ -14,10 +14,11 @@
     "eslint-plugin-vue": "^7.17.0",
     "tailwindcss": "^2.2.8",
     "vite": "^2.5.1",
+    "vitest": "^1.6.0",
     "vue": "^3.2.6"
   },
   "dependencies": {
-    "@notionhq/client": "^0.3.1",
+    "@vercel/postgres": "^0.8.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1"
   }
