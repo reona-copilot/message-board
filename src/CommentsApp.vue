@@ -4,42 +4,20 @@
     <!-- 留言板容器 -->
     <div class="max-w-screen-xl mx-auto bg-white p-8 rounded-lg shadow-2xl">
       <!-- 标题 -->
-      <h2 class="text-3xl my-6">评论</h2>
-
-      <!-- 留言表单 
-      添加事件，处理回调 @submit="addNewComment"
-      -->
+      <h2 class="text-3xl my-6">留言板</h2>
       <CommentBox @submit="addNewComment" />
-
       <!-- 分割线 -->
       <DividerHorizontal />
+      <!-- 评论 -->
       <div
         v-for="comment in comments"
         :key="comment.id"
       >
-        <!-- 评论 -->
         <CommentItem
-          :user="comment.user"
-          :avatar="comment.avatar"
-          :time="comment.time"
+          :nickname="comment.nickname"
           :content="comment.content"
+          :time="comment.time"
         />
-        <!-- 回复容器 -->
-        <ReplyContainer v-if="comment.replies">
-          <!-- 留言列表 -->
-          <CommentItem
-            v-for="reply in comment.replies"
-            :key="reply.id"
-            :user="reply.user"
-            :avatar="reply.avatar"
-            :time="reply.time"
-            :content="reply.content"
-          />
-        </ReplyContainer>
-        <!-- 回复按钮
-          设置子组件传过来的数据
-         -->
-        <ReplyBox @submit="addNewComment($event, comment.id)" />
       </div>
     </div>
   </main>
@@ -50,14 +28,6 @@
 import CommentBox from './components/CommentBox.vue'
 import CommentItem from './components/CommentItem.vue'
 import DividerHorizontal from './components/DividerHorizontal.vue'
-import ReplyBox from './components/ReplyBox.vue'
-import ReplyContainer from './components/ReplyContainer.vue'
-// 导入图片
-import avatar1 from './assets/images/avatar1.jpeg'
-import avatar2 from './assets/images/avatar2.png'
-import avatar3 from './assets/images/avatar3.png'
-import avatar4 from './assets/images/avatar4.jpeg'
-import avatar5 from './assets/images/avatar5.jpeg'
 
 // 导入 ref 与 onMounted 函数
 import { ref, onMounted } from 'vue'
@@ -74,6 +44,31 @@ async function getAllComments() {
 // 使用生命周期方法
 onMounted(() => {
   getAllComments()
+  // // 模拟数据
+  // comments.value.push({
+  //   id: 1,
+  //   nickname: '张三',
+  //   content: '这是一条留言',
+  //   time: '2021-10-01 12:00:00',
+  // })
+  // comments.value.push({
+  //   id: 1,
+  //   nickname: '张三',
+  //   content: '这是一条留言',
+  //   time: '2021-10-01 12:00:00',
+  // })
+  // comments.value.push({
+  //   id: 1,
+  //   nickname: '张三',
+  //   content: '这是一条留言',
+  //   time: '2021-10-01 12:00:00',
+  // })
+  // comments.value.push({
+  //   id: 1,
+  //   nickname: '张三',
+  //   content: '这是一条留言',
+  //   time: '2021-10-01 12:00:00',
+  // })
 })
 
 // 定义发表留言和回复函数
@@ -88,22 +83,8 @@ const addNewComment = async (content, replyTo) => {
       ...(replyTo && { replyTo }),
     }),
   })
-
-  // 追加新的评论
   const newComment = await res.json()
-  if (!replyTo) {
-    // 如果回复为空
-    comments.value.unshift(newComment)
-  } else {
-    // 回复不为空
-    comments.value.find((c) => c.id === replyTo).replies.unshift(newComment)
-  }
-
-  // 新增加完评论后，自动获取新的评论列表
-  // Notion AIP 有延迟，所以在添加完 page 之后，需要过一会才能获取到新的评论列表
-  // setTimeout(async () => {
-  //   await getAllComments()
-  // }, 1000)
+  comments.value.unshift(newComment)
 }
 </script>
 
